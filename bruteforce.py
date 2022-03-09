@@ -1,7 +1,7 @@
 import csv
 import time
 from itertools import combinations
-from typing import Callable, Tuple
+from typing import Callable, Tuple, List
 from dataclasses import dataclass
 
 
@@ -51,9 +51,13 @@ class Combination:
         Calcul the total costs\n
         :return: The sum of total costs between several actions
         """
-        return sum(float(action.cost) for action in self.actions)
+        return sum(action.cost for action in self.actions)
 
     def check_best_gains(self) -> Tuple[float, float, tuple]:
+        """
+        Check if new gain is greater that actual gains
+        :return: return the new cost, new gain and all actions
+        """
         total_costs = self.total_costs()
         if total_costs < self.max_cost:
             total_gains = self.total_gains()
@@ -72,13 +76,13 @@ def timing(function: Callable) -> Callable:
     def wrapper(*args, **kwargs):
         start = int(round(time.time() * 1000))
         res = function(*args, **kwargs)
-        print(f'Time bruteforce: {int(round(time.time() * 1000)) - start}ms')
+        print(f'Time algorithm: {int(round(time.time() * 1000)) - start}ms')
         return res
 
     return wrapper
 
 
-def read_csv(filename: str) -> list[Action]:
+def read_csv(filename: str) -> List[Action]:
     """
     A function which reads datas of csv file\n
     :param filename: A csv file
@@ -86,13 +90,17 @@ def read_csv(filename: str) -> list[Action]:
     """
     datas = []
     with open(file=filename, newline='') as file:
-        reader = csv.DictReader(file, delimiter=';')
+        reader = csv.DictReader(file, delimiter=',')
         for row in reader:
-            datas.append(Action(row['name'], row['price'], row['profit'], row['gains']))
+            price = float(row['price'])
+            if price > 0:
+                profit = round(float(row['profit']) / 100, 2)
+                gain = round(price * profit, 2)
+                datas.append(Action(row['name'], price, profit, gain))
     return datas
 
 
-def display(costs: float, gains: float, best_actions: Tuple) -> None:
+def display(costs: float, gains: float, best_actions: Tuple[Action]) -> None:
     """
     Display information of actions with the total costs and gains\n
     :param costs: totals costs of best actions
@@ -101,13 +109,31 @@ def display(costs: float, gains: float, best_actions: Tuple) -> None:
     """
     print(f'Costs: {round(costs, 2)}€')
     print(f'Gains: {round(gains, 2)}€')
-    print('Description actions')
     for action in best_actions:
         print(action.__str__())
 
 
+def n_actions(dataset: List[Action], max_cost: int, reverse: bool = False) -> int:
+    """
+    Function for checking min actions and max actions with as max_costs
+    :param dataset: List actions
+    :param max_cost: Max costs possible
+    :param reverse: Sort list ascendant (False) or descendant (True)
+    :return: numbers of actions possible with max costs
+    """
+    total = 0
+    i = 0
+    dataset.sort(key=lambda x: x.cost, reverse=reverse)
+    while i < len(dataset) - 1 and max_cost > 0:
+        if max_cost - dataset[i].cost > 0:
+            total += 1
+            max_cost -= dataset[i].cost
+        i += 1
+    return total
+
+
 @timing
-def bruteforce(dataset: list[Action], max_cost: int) -> None:
+def bruteforce(dataset: List[Action], max_cost: int) -> None:
     """
     Function for checking best actions with itertools combinations\n
     :param dataset: Objects list of type action
@@ -116,13 +142,12 @@ def bruteforce(dataset: list[Action], max_cost: int) -> None:
     best_costs = 0.0
     best_gains = 0.0
     best_actions = None
-    for n in range(1, len(dataset) + 1):
+    min_n = n_actions(dataset, 500, True)
+    max_n = n_actions(dataset, 500)
+    for n in range(min_n, max_n):
         for combination in combinations(dataset, n):
-            if n == 1:
-                best_costs, best_gains, best_actions = Combination(combination, max_cost).check_best_gains()
-            else:
-                best_costs, best_gains, best_actions = Combination(combination, max_cost, best_costs, best_gains,
-                                                                   best_actions).check_best_gains()
+            best_costs, best_gains, best_actions = Combination(combination, max_cost, best_costs, best_gains,
+                                                               best_actions).check_best_gains()
     display(best_costs, best_gains, best_actions)
 
 
