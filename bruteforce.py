@@ -20,7 +20,7 @@ class Action:
     gains: float
 
     def __str__(self):
-        return f"Name: {self.name} => Cost: {self.cost} => Profit: {self.profit} => Gains: {self.gains}"
+        return f"{self.name}"
 
 
 @dataclass()
@@ -41,14 +41,14 @@ class Combination:
 
     def total_gains(self) -> float:
         """
-        Calcul the total gains\n
+        Calcul the total gains
         :return: The sum of total gains between several actions
         """
         return sum(float(action.gains) for action in self.actions)
 
     def total_costs(self) -> float:
         """
-        Calcul the total costs\n
+        Calcul the total costs
         :return: The sum of total costs between several actions
         """
         return sum(action.cost for action in self.actions)
@@ -68,7 +68,7 @@ class Combination:
 
 def timing(function: Callable) -> Callable:
     """
-    Get time of execution of  a function\n
+    Get time of execution of  a function
     :param function: any function
     :return: Time of execution of a function
     """
@@ -84,7 +84,7 @@ def timing(function: Callable) -> Callable:
 
 def read_csv(filename: str) -> List[Action]:
     """
-    A function which reads datas of csv file\n
+    A function which reads datas of csv file
     :param filename: A csv file
     :return: An objects list of type Action
     """
@@ -102,15 +102,14 @@ def read_csv(filename: str) -> List[Action]:
 
 def display(costs: float, gains: float, best_actions: Tuple[Action]) -> None:
     """
-    Display information of actions with the total costs and gains\n
+    Display information of actions with the total costs and gains
     :param costs: totals costs of best actions
-    :param gains: totals gains of best actions
+    :param gains: totals gains of best action
     :param best_actions: information of best actions
     """
     print(f'Costs: {round(costs, 2)}€')
     print(f'Gains: {round(gains, 2)}€')
-    for action in best_actions:
-        print(action.__str__())
+    print([action.name for action in best_actions])
 
 
 def n_actions(dataset: List[Action], max_cost: int, reverse: bool = False) -> int:
