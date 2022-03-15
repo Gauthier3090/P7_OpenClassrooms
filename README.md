@@ -34,12 +34,6 @@ Pour commencer à utiliser l’environnement virtuel, il doit être activé :
 .\venv\Scripts\activate.bat
 ````
 
-Utilisez le gestionnaire de packages pip pour installer les paquets requis :
-
-````Bash
-pip install -r requirements.txt
-````
-
 Pour lancer le fichier bruteforce:
 
 ````Bash
@@ -64,12 +58,6 @@ Pour commencer à utiliser l’environnement virtuel, il doit être activé :
 
 ````Bash
 source venv/bin/activate
-````
-
-Utilisez le gestionnaire de packages pip pour installer les paquets requis :
-
-````Bash
-pip install -r requirements.txt
 ````
 
 Pour lancer le fichier bruteforce:
