@@ -41,21 +41,21 @@ class Combination:
 
     def total_gains(self) -> float:
         """
-        Calcul the total gains
+        Calcul the total gains\n
         :return: The sum of total gains between several actions
         """
         return sum(float(action.gains) for action in self.actions)
 
     def total_costs(self) -> float:
         """
-        Calcul the total costs
+        Calcul the total costs\n
         :return: The sum of total costs between several actions
         """
         return sum(action.cost for action in self.actions)
 
     def check_best_gains(self) -> Tuple[float, float, tuple]:
         """
-        Check if new gain is greater that actual gains
+        Check if new gain is greater that actual gains\n
         :return: return the new cost, new gain and all actions
         """
         total_costs = self.total_costs()
@@ -68,7 +68,7 @@ class Combination:
 
 def timing(function: Callable) -> Callable:
     """
-    Get time of execution of  a function
+    Get time of execution of  a function\n
     :param function: any function
     :return: Time of execution of a function
     """
@@ -84,7 +84,7 @@ def timing(function: Callable) -> Callable:
 
 def read_csv(filename: str) -> List[Action]:
     """
-    A function which reads datas of csv file
+    A function which reads datas of csv file\n
     :param filename: A csv file
     :return: An objects list of type Action
     """
