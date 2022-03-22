@@ -1,6 +1,7 @@
 from re import A
 from typing import List
 from bruteforce import read_csv, timing, Action, display
+import argparse
 
 
 def total_costs(list_actions: List[Action]) -> float:
@@ -77,7 +78,11 @@ def backpack(max_cost: int, list_actions: List[Action]) -> list[list[int]]:
 
 
 if __name__ == '__main__':
-    actions = read_csv('csv/dataset2_Python+P7.csv')
-    tab = backpack(500, actions)
-    best_actions = find_actions(500, actions, tab)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("csv", help="Csv file of my actions")
+    parser.add_argument("max_cost", help="Maximum cost of my actions")
+    args = parser.parse_args()
+    actions = read_csv(args.csv)
+    tab = backpack(int(args.max_cost), actions)
+    best_actions = find_actions(int(args.max_cost), actions, tab)
     display(total_costs(best_actions), total_gains(best_actions), tuple(best_actions))

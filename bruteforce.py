@@ -1,5 +1,7 @@
+from ast import parse
 import csv
 import time
+import argparse
 from itertools import combinations
 from typing import Callable, Tuple, List
 from dataclasses import dataclass
@@ -151,6 +153,10 @@ def bruteforce(dataset: List[Action], max_cost: int) -> tuple[float, float, tupl
 
 
 if __name__ == '__main__':
-    actions = read_csv('csv/actions.csv')
-    best_costs, best_gains, best_actions = bruteforce(actions, 500)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("csv", help="Csv file of my actions")
+    parser.add_argument("max_cost", help="Maximum cost of my actions")
+    args = parser.parse_args()
+    actions = read_csv(args.csv)
+    best_costs, best_gains, best_actions = bruteforce(actions, int(args.max_cost))
     display(best_costs, best_gains, best_actions)
