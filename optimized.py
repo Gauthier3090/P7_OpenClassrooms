@@ -19,7 +19,7 @@ def total_gains(list_actions: List[Action]) -> float:
     return sum(float(action.gains) for action in list_actions)
 
 
-def find_actions(max_cost: int, list_actions: List[Action], tab: List[List[int]]) -> List[Action]:
+def find_actions(max_cost: int, list_actions: List[Action], tab: List[List[int]]) -> list[Action]:
     """
     Find actions with the best gains\n
     :param max_cost: the max cost possible
@@ -42,7 +42,7 @@ def find_actions(max_cost: int, list_actions: List[Action], tab: List[List[int]]
     return best_actions
 
 
-def prepare_data(list_actions: List[Action]) -> List[Action]:
+def prepare_data(list_actions: List[Action]) -> list[Action]:
     """
     Convert the cost of my actions (float to int)\n
     :param list_actions: the number of actions
@@ -54,7 +54,7 @@ def prepare_data(list_actions: List[Action]) -> List[Action]:
 
 
 @timing
-def backpack(max_cost: int, list_actions: List[Action]) -> List[List[int]]:
+def backpack(max_cost: int, list_actions: List[Action]) -> list[list[int]]:
     """
     Given a set of items, each with a weight and a value, determine the number of each item to include
     in a collection so that the total weight is less than or equal to a given limit

@@ -82,7 +82,7 @@ def timing(function: Callable) -> Callable:
     return wrapper
 
 
-def read_csv(filename: str) -> List[Action]:
+def read_csv(filename: str) -> list[Action]:
     """
     A function which reads datas of csv file\n
     :param filename: A csv file
@@ -100,7 +100,7 @@ def read_csv(filename: str) -> List[Action]:
     return datas
 
 
-def display(costs: float, gains: float, best_actions: Tuple[Action]) -> None:
+def display(costs: float, gains: float, best_actions: tuple[Action]) -> None:
     """
     Display information of actions with the total costs and gains
     :param costs: totals costs of best actions
@@ -132,7 +132,7 @@ def n_actions(dataset: List[Action], max_cost: int, reverse: bool = False) -> in
 
 
 @timing
-def bruteforce(dataset: List[Action], max_cost: int) -> Tuple(float, float, List[Action]):
+def bruteforce(dataset: List[Action], max_cost: int) -> tuple[float, float, tuple]:
     """
     Function for checking best actions with itertools combinations\n
     :param dataset: Objects list of type action
