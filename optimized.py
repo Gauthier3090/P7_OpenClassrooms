@@ -1,7 +1,9 @@
+from re import A
+from typing import List
 from bruteforce import read_csv, timing, Action, display
 
 
-def total_costs(list_actions: list[Action]) -> float:
+def total_costs(list_actions: List[Action]) -> float:
     """
     Calcul the total costs\n
     :return: The sum of total costs between several actions
@@ -9,7 +11,7 @@ def total_costs(list_actions: list[Action]) -> float:
     return sum(float(action.cost) for action in list_actions)
 
 
-def total_gains(list_actions: list[Action]) -> float:
+def total_gains(list_actions: List[Action]) -> float:
     """
     Calcul the total costs\n
     :return: The sum of total costs between several actions
@@ -17,7 +19,7 @@ def total_gains(list_actions: list[Action]) -> float:
     return sum(float(action.gains) for action in list_actions)
 
 
-def find_actions(max_cost: int, list_actions: list[Action], tab: list[list[int]]):
+def find_actions(max_cost: int, list_actions: List[Action], tab: List[List[int]]) -> List[Action]:
     """
     Find actions with the best gains\n
     :param max_cost: the max cost possible
@@ -25,7 +27,7 @@ def find_actions(max_cost: int, list_actions: list[Action], tab: list[list[int]]
     :param tab: list gains according to costs
     :return: best actions with the best gains
     """
-    w = max_cost
+    w = max_cost * 100
     n = len(list_actions)
     best_actions = []
 
@@ -37,10 +39,10 @@ def find_actions(max_cost: int, list_actions: list[Action], tab: list[list[int]]
         n -= 1
     for action in best_actions:
         action.cost /= 100
-    display(total_costs(best_actions), total_gains(best_actions), tuple(best_actions))
+    return best_actions
 
 
-def prepare_data(list_actions: list[Action]):
+def prepare_data(list_actions: List[Action]) -> List[Action]:
     """
     Convert the cost of my actions (float to int)\n
     :param list_actions: the number of actions
@@ -52,7 +54,7 @@ def prepare_data(list_actions: list[Action]):
 
 
 @timing
-def backpack(max_cost: int, list_actions: list[Action]):
+def backpack(max_cost: int, list_actions: List[Action]) -> List[List[int]]:
     """
     Given a set of items, each with a weight and a value, determine the number of each item to include
     in a collection so that the total weight is less than or equal to a given limit
@@ -71,9 +73,11 @@ def backpack(max_cost: int, list_actions: list[Action]):
                                 tab[i - 1][int(w - list_actions[i - 1].cost)], tab[i - 1][w])
             else:
                 tab[i][w] = tab[i - 1][w]
-    find_actions(max_cost, list_actions, tab)
+    return tab
 
 
 if __name__ == '__main__':
     actions = read_csv('csv/dataset2_Python+P7.csv')
-    backpack(500, actions)
+    tab = backpack(500, actions)
+    best_actions = find_actions(500, actions, tab)
+    display(total_costs(best_actions), total_gains(best_actions), tuple(best_actions))

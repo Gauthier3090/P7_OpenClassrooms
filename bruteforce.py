@@ -132,7 +132,7 @@ def n_actions(dataset: List[Action], max_cost: int, reverse: bool = False) -> in
 
 
 @timing
-def bruteforce(dataset: List[Action], max_cost: int) -> None:
+def bruteforce(dataset: List[Action], max_cost: int) -> Tuple(float, float, List[Action]):
     """
     Function for checking best actions with itertools combinations\n
     :param dataset: Objects list of type action
@@ -147,9 +147,10 @@ def bruteforce(dataset: List[Action], max_cost: int) -> None:
         for combination in combinations(dataset, n):
             best_costs, best_gains, best_actions = Combination(combination, max_cost, best_costs, best_gains,
                                                                best_actions).check_best_gains()
-    display(best_costs, best_gains, best_actions)
+    return best_costs, best_gains, best_actions
 
 
 if __name__ == '__main__':
     actions = read_csv('csv/actions.csv')
-    bruteforce(actions, 500)
+    best_costs, best_gains, best_actions = bruteforce(actions, 500)
+    display(best_costs, best_gains, best_actions)
